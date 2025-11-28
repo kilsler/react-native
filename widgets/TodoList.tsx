@@ -11,7 +11,7 @@ interface Todo {
     due_date: string;
 }
 
-export default function TodoPage() {
+export default function TodoListPage() {
     const [todos, setTodos] = useState<Todo[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -30,7 +30,7 @@ export default function TodoPage() {
             const json = await res.json();
             if (!res.ok) throw new Error(json.message);
 
-            setTodos(json.data);
+            setTodos(json.data.data);
         } catch (err) {
             setError("Error loading todos");
         }
@@ -45,7 +45,6 @@ export default function TodoPage() {
         return (
             <View style={styles.center}>
                 <ActivityIndicator size="large" />
-                <Text>Loading todos...</Text>
             </View>
         );
     }
@@ -73,12 +72,7 @@ export default function TodoPage() {
                 contentContainerStyle={{ padding: 15 }}
             />
         </View>
-
-
     );
-
-
-
 }
 
 const styles = StyleSheet.create({

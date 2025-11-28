@@ -55,6 +55,8 @@ export default function LoginPage() {
                 <Button
                     title="Go to Register"
                     onPress={() => router.push('/register')}
+                    color="#555"
+
                 />
             </View>
         </View>
