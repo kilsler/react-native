@@ -1,4 +1,4 @@
-import TodoItem from "@/components/ui/TodoItem";
+import TodoItem from "@/shared/api/ui/TodoItem";
 import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native";

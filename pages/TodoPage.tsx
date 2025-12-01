@@ -1,4 +1,4 @@
-import TodoItem from "@/components/ui/TodoItem";
+import TodoItem from "@/shared/api/components/ui/TodoItem";
 import { useFocusEffect } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
 import { useState } from "react";
@@ -69,7 +69,7 @@ export default function TodoPage() {
                     onPress: async () => {
                         try {
                             const token = await SecureStore.getItemAsync("token");
-                            const res = await fetch(`http://10.45.204.194:3000/api/todo/${id}`, {
+                            const res = await fetch(`${api_url}/api/todo/${id}`, {
                                 method: "DELETE",
                                 headers: { Authorization: `Bearer ${token}` },
                             });
