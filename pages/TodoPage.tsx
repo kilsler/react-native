@@ -15,12 +15,13 @@ export default function TodoPage() {
     const [todos, setTodos] = useState<Todo[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const api_url = process.env.EXPO_PUBLIC_API_URL;
 
     const fetchTodos = async () => {
         try {
             const token = await SecureStore.getItemAsync("token");
 
-            const res = await fetch("http://192.168.0.107:3000/api/todo", {
+            const res = await fetch(`${api_url}/api/todo`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
@@ -44,7 +45,7 @@ export default function TodoPage() {
     const toggleTodo = async (id: number) => {
         try {
             const token = await SecureStore.getItemAsync("token");
-            const res = await fetch(`http://192.168.0.107:3000/api/todo/${id}/toggle`, {
+            const res = await fetch(`${api_url}/api/todo/${id}/toggle`, {
                 method: "PATCH",
                 headers: { Authorization: `Bearer ${token}` },
             });
@@ -68,7 +69,7 @@ export default function TodoPage() {
                     onPress: async () => {
                         try {
                             const token = await SecureStore.getItemAsync("token");
-                            const res = await fetch(`http://192.168.0.107:3000/api/todo/${id}`, {
+                            const res = await fetch(`http://10.45.204.194:3000/api/todo/${id}`, {
                                 method: "DELETE",
                                 headers: { Authorization: `Bearer ${token}` },
                             });

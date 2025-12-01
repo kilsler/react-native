@@ -13,6 +13,7 @@ interface TodoForm {
 }
 
 export default function CreateTodoPage() {
+    const api_url = process.env.EXPO_PUBLIC_API_URL;
     const [form, setForm] = useState<TodoForm>({
         title: "",
         category_id: null,
@@ -55,7 +56,7 @@ export default function CreateTodoPage() {
             const token = await SecureStore.getItemAsync("token");
             if (!token) throw new Error("No token found");
 
-            const res = await fetch("http://192.168.0.107:3000/api/todo", {
+            const res = await fetch(`${api_url}api/todo`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

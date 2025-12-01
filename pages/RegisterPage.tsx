@@ -6,6 +6,7 @@ export default function RegisterPage() {
     const [form, setForm] = useState({ username: "", email: "", password: "" });
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [success, setSuccess] = useState<string>("");
+    const api_url = process.env.EXPO_PUBLIC_API_URL;
 
     const validate = () => {
         let temp: any = {};
@@ -30,7 +31,7 @@ export default function RegisterPage() {
         if (!validate()) return;
 
         try {
-            const res = await fetch("http://192.168.0.107:3000/api/auth/register", {
+            const res = await fetch(`${api_url}/api/auth/register`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(form),

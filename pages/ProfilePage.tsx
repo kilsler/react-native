@@ -13,13 +13,14 @@ export default function ProfilePage() {
     const [profile, setProfile] = useState<Profile | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const api_url = process.env.EXPO_PUBLIC_API_URL;
 
     const fetchProfile = async () => {
         try {
             const token = await SecureStore.getItemAsync("token");
             if (!token) throw new Error("No token found");
 
-            const res = await fetch("http://192.168.0.107:3000/api/auth/profile", {
+            const res = await fetch(`${api_url}/api/auth/profile`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,

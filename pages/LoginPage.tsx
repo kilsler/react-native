@@ -6,10 +6,11 @@ import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 export default function LoginPage() {
     const [form, setForm] = useState({ email: '', password: '' });
     const [error, setError] = useState('');
+    const api_url = process.env.EXPO_PUBLIC_API_URL;
 
     const login = async () => {
         try {
-            const res = await fetch('http://192.168.0.107:3000/api/auth/login', {
+            const res = await fetch(`${api_url}/api/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(form),

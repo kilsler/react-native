@@ -14,10 +14,6 @@ export default function ProtectedLayout() {
         name="tabs"
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="[id]"
-        options={{ title: "Edit Todo" }}
-      />
     </Stack>
   );
 }
