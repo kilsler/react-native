@@ -1,7 +1,8 @@
 import TodoItem from "@/shared/api/ui/TodoItem";
+import { useFocusEffect } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
-import { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, View } from "react-native";
 interface Todo {
     id: number;
     title: string;
@@ -10,7 +11,7 @@ interface Todo {
     due_date: string;
 }
 
-export default function TodoListPage() {
+export default function TodoList() {
     const [todos, setTodos] = useState<Todo[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -30,21 +31,65 @@ export default function TodoListPage() {
             const json = await res.json();
             if (!res.ok) throw new Error(json.message);
 
-            setTodos(json.data.data);
+            setTodos(json.data);
         } catch (err) {
             setError("Error loading todos");
         }
         setLoading(false);
     };
 
-    useEffect(() => {
+    useFocusEffect(() => {
         fetchTodos();
-    }, []);
+    });
+
+    const toggleTodo = async (id: number) => {
+        try {
+            const token = await SecureStore.getItemAsync("token");
+            const res = await fetch(`${api_url}/api/todo/${id}/toggle`, {
+                method: "PATCH",
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            if (!res.ok) throw new Error("Failed to toggle todo");
+
+            setTodos(todos.map(t => t.id === id ? { ...t, completed: t.completed ? 0 : 1 } : t));
+        } catch (err) {
+            Alert.alert("Error", "Error toggling todo");
+        }
+    };
+
+    const deleteTodo = async (id: number) => {
+        Alert.alert(
+            "Delete Todo",
+            "Are you sure you want to delete this todo?",
+            [
+                { text: "Cancel", style: "cancel" },
+                {
+                    text: "Delete",
+                    style: "destructive",
+                    onPress: async () => {
+                        try {
+                            const token = await SecureStore.getItemAsync("token");
+                            const res = await fetch(`${api_url}/api/todo/${id}`, {
+                                method: "DELETE",
+                                headers: { Authorization: `Bearer ${token}` },
+                            });
+                            if (!res.ok) throw new Error("Failed to delete todo");
+
+                            setTodos(todos.filter(t => t.id !== id));
+                        } catch (err) {
+                            Alert.alert("Error", "Error deleting todo");
+                        }
+                    },
+                },
+            ]
+        );
+    };
 
     if (loading) {
         return (
             <View style={styles.center}>
                 <ActivityIndicator size="large" />
+                <Text>Loading todos...</Text>
             </View>
         );
     }
@@ -56,6 +101,8 @@ export default function TodoListPage() {
             </View>
         );
     }
+
+
 
     return (
         <View style={styles.container}>

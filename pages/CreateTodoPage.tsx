@@ -1,4 +1,4 @@
-import CategoryRadio from "@/shared/api/components/ui/CategoryRadio";
+import CategoryRadio from "@/shared/api/ui/CategoryRadio";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
